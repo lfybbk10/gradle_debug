@@ -12,6 +12,9 @@ public class StringUtils {
      * @return Перевернутая строка, или null если на входе был null.
      */
     public String reverse(String str) {
+        if (str == null) {
+            return null;
+        }
         return new StringBuilder(str).reverse().toString(); // Пример возможной реализации
     }
 }
