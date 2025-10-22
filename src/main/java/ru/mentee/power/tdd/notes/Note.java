@@ -2,10 +2,11 @@ package ru.mentee.power.tdd.notes;
 
 import java.time.LocalDate;
 import java.util.Collections;
-import java.util.Set;
 import java.util.HashSet;
 import java.util.Objects;
+import java.util.Set;
 
+/** Класс заметок. */
 public class Note {
 
   private final int id; // Уникальный ID
@@ -14,9 +15,11 @@ public class Note {
   private final LocalDate creationDate; // Дата создания
   private Set<String> tags; // Набор тегов (уникальные строки)
 
+  /** Конструктор. */
   public Note(int id, String title, String text) {
-    if (title == null || text == null)
+    if (title == null || text == null) {
       throw new IllegalArgumentException("Title and text must not be null");
+    }
     this.id = id;
     this.title = title;
     this.text = text;
@@ -40,26 +43,37 @@ public class Note {
     return creationDate;
   }
 
+  /** Получение всех тэгов. */
   public Set<String> getTags() {
     return Collections.unmodifiableSet(tags);
   }
 
+  /** Присваиваем название. */
   public void setTitle(String title) {
-    if (title == null) throw new IllegalArgumentException("Title must not be null");
+    if (title == null) {
+      throw new IllegalArgumentException("Title must not be null");
+    }
     this.title = title;
   }
 
+  /** Присваиваем текст. */
   public void setText(String text) {
-    if (text == null) throw new IllegalArgumentException("Text must not be null");
+    if (text == null) {
+      throw new IllegalArgumentException("Text must not be null");
+    }
     this.text = text;
   }
 
+  /** Добавляем тэг. */
   public void addTag(String tag) {
-    if (tag == null || tag.isEmpty()) return;
+    if (tag == null || tag.isEmpty()) {
+      return;
+    }
 
     tags.add(tag.toLowerCase());
   }
 
+  /** Удаляем тэг. */
   public boolean removeTag(String tag) {
     if (tags.contains(tag.toLowerCase())) {
       tags.remove(tag.toLowerCase());
@@ -70,7 +84,9 @@ public class Note {
 
   @Override
   public boolean equals(Object o) {
-    if (!(o instanceof Note note)) return false;
+    if (!(o instanceof Note note)) {
+      return false;
+    }
     return id == note.id;
   }
 

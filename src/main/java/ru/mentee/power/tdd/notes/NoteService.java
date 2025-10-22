@@ -1,14 +1,15 @@
 package ru.mentee.power.tdd.notes;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.HashSet;
+import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 import java.util.Set;
-import java.util.List;
-import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.concurrent.atomic.AtomicInteger;
 
+/** Сервис для работы с заметками. */
 public class NoteService {
 
   private final Map<Integer, Note> notes = new HashMap<>();
