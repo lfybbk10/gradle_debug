@@ -1,5 +1,6 @@
 plugins {
     id 'java'
+    id 'jacoco'
 }
 
 group = 'ru.mentee.power'
@@ -12,8 +13,22 @@ repositories {
 dependencies {
     testImplementation platform('org.junit:junit-bom:5.10.0')
     testImplementation 'org.junit.jupiter:junit-jupiter'
+    testImplementation('org.assertj:assertj-core:3.24.2')
+    testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
 }
 
 test {
     useJUnitPlatform()
+    finalizedBy jacocoTestReport
+}
+
+jacocoTestReport {
+    dependsOn test // Убедимся, что отчет генерируется после выполнения тестов
+    reports {
+        xml.required = false // XML отчет нам пока не нужен
+        csv.required = false // CSV тоже
+        html.required = true // А вот HTML отчет - это то, что нужно!
+    }
+    // (Опционально) Можно указать, какие классы исключить из отчета
+    // classDirectories.setFrom(files(classDirectories.files.collect { fileTree(dir: it, exclude: '**/some/package/to/exclude/**') }))
 }
