@@ -1,6 +1,7 @@
 plugins {
     id 'java'
     id 'jacoco'
+    id 'checkstyle'
 }
 
 group = 'ru.mentee.power'
@@ -15,6 +16,45 @@ dependencies {
     testImplementation 'org.junit.jupiter:junit-jupiter'
     testImplementation('org.assertj:assertj-core:3.24.2')
     testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
+}
+
+checkstyle {
+    // Указываем версию Checkstyle (важно для совместимости с правилами)
+    toolVersion = '12.1.0' // Используй актуальную версию
+
+    // (Опционально) Максимальное количество ошибок перед остановкой
+    // maxErrors = 0
+    // (Опционально) Максимальное количество предупреждений
+    // maxWarnings = 0
+}
+
+checkstyleMain {
+    // Используем стандартную конфигурацию Google
+    configFile = file("${rootDir}/config/checkstyle/google_checks.xml") // Путь нужно будет создать
+    // Или используем встроенную, если не хотим скачивать файл:
+    // config = resources.text.fromArchiveEntry("com.puppycrawl.tools:checkstyle:${checkstyle.toolVersion}", "google_checks.xml")
+}
+
+// Настройка задачи checkstyleMain (проверка основного кода src/main/java)
+tasks.withType(Checkstyle) {
+    // Говорим Checkstyle использовать файл конфигурации из нашего проекта
+    configFile = rootProject.file('config/checkstyle/google_checks.xml')
+
+    reports {
+        // Генерировать отчеты в XML и HTML форматах
+        xml.required = true
+        html.required = true
+        // Путь к HTML отчету будет build/reports/checkstyle/main.html (и test.html для тестов)
+    }
+
+    // Указываем исходники для проверки (по умолчанию уже настроено для main и test)
+    // source = fileTree('src/main/java')
+}
+
+// Убедимся, что задача check запускает checkstyleMain и checkstyleTest
+// (Обычно это происходит автоматически, но для ясности можно указать)
+tasks.named('check') {
+    dependsOn tasks.withType(Checkstyle)
 }
 
 test {
